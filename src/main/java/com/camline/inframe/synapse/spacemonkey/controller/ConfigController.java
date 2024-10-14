@@ -5,17 +5,22 @@ import com.camline.inframe.synapse.spacemonkey.model.CaConfig;
 import com.camline.inframe.synapse.spacemonkey.model.Config;
 import com.camline.inframe.synapse.spacemonkey.model.ServerConfig;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.NativeWebRequest;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
-
+@Service
 public class ConfigController implements ConfigApiDelegate {
 
-    public ConfigController() {
-        super();
+    @Override
+    public Optional<NativeWebRequest> getRequest() {
+        return Optional.empty();
     }
 
+    @Override
     public ResponseEntity<Config> getConfig() {
         Config config = new Config();
 
