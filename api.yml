@@ -1,0 +1,194 @@
+openapi: 3.0.3
+info:
+  title: camLine Space Monkey RX - OpenAPI 3.0.3
+  description:
+    This is the Inframe Synapse - Space Integration Service RX API for the
+    Synapse Inframe MES. Space Monkey is a abstracted integration servcie for
+    SPACE and related services towards the Synapse Inframe MES. The current
+    verison is PoC state.
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: tobias.richter@camline.com
+  license:
+    name: Commercial
+    url: https://www.camline.com/
+  version: 1.0.0-oas3
+externalDocs:
+  description: Project Documentation
+  url: https://camline.atlassian.net/wiki/x/EYC4Pw
+servers:
+  - url: https://localhost:8080
+tags:
+  - name: Space Request Endpoint
+    description: Space Service Adress for the Space Listener Services
+    externalDocs:
+      description: Configuration Documentation
+      url: https://camline.atlassian.net/wiki/x/EYC4Pw
+paths:
+  /space:
+    post:
+      tags:
+        - Configuration
+      summary: get a overview on the service configs as key value list
+      description: simple infoinformation service for operations and developers
+      operationId: getConfig
+      responses:
+        2XX:
+          description: Successful
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CaSelectedSamplesData'
+        5XX:
+          description: Service out of order
+components:
+  schemas:
+    CaSelectedSamplesData:
+      type: object
+      properties:
+        caContext:
+          $ref: '#/components/schemas/CaContext'
+        caSamples:
+          type: array
+          items:
+            $ref: '#/components/schemas/CaWithSamples'
+    CaContext:
+      type: object
+      properties:
+        ldsId:
+          type: integer
+          format: integer
+        userStation:
+          type: string
+        author:
+          type: string
+        eventDate:
+          type: integer
+          format: int64
+    CaWithSamples:
+      type: object
+      properties:
+        correctiveAction:
+          $ref: '#/components/schemas/CorrectiveAction'
+        samples:
+          type: array
+          items:
+            $ref: '#/components/schemas/Sample'
+    CorrectiveAction:
+      type: object
+      properties:
+        caId:
+          type: integer
+          format: int32
+        caName:
+          type: string
+        caAttributes:
+          type: array
+          items:
+            type: string
+        caTag:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+    Sample:
+      type: object
+      properties:
+        sampleId:
+          type: integer
+          format: int64
+        sampleDate:
+          type: integer
+          format: int64
+        prioValuationId:
+          type: integer
+          format: int32
+        allValuationsIds:
+          type: array
+          items:
+            type: integer
+        spcFlag:
+          type: boolean
+        extFlag:
+          type: boolean
+        violationComment:
+          type: string
+        externalComment:
+          type: string
+        previousAssignedCAId:
+          type: integer
+          format: int32
+        sampleChart:
+          $ref: '#/components/schemas/SampleChart'
+        sampleExtractorKeys:
+          type: array
+          items:
+            $ref: '#/components/schemas/SampleKey'
+        sampleTags:
+          type: array
+          items:
+            $ref: '#/components/schemas/Tag'
+        sampleAttributes:
+          type: array
+          items:
+            $ref: '#/components/schemas/SampleAttribute'
+    SampleChart:
+      type: object
+      properties:
+        channelId:
+          type: integer
+          format: int32
+        ckcId:
+          type: integer
+          format: int32
+        parameterName:
+          type: string
+        channelState:
+          type: string
+        customerFields:
+          type: array
+          items:
+            $ref: '#/components/schemas/CustomerField'
+    SampleKey:
+      type: object
+      properties:
+        keyId:
+          type: integer
+          format: int32
+        keyName:
+          type: string
+        keyValue:
+          type: string
+        keyType:
+          $ref: '#/components/schemas/KeyType'
+    SampleAttribute:
+      type: object
+      properties:
+        type:
+          type: string
+        location:
+          type: string
+        cause:
+          type: string
+        count:
+          type: integer
+          format: int32
+    Tag:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int32
+        name:
+          type: string
+    CustomerField:
+      type: object
+      properties:
+        name:
+          type: string
+        value:
+          type: string
+    KeyType:
+      type: string
+      enum:
+        - EXTRACTOR_KEY
+        - DATA_KEY

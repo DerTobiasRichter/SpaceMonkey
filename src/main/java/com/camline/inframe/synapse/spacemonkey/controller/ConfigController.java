@@ -1,9 +1,9 @@
 package com.camline.inframe.synapse.spacemonkey.controller;
 
 import com.camline.inframe.synapse.spacemonkey.api.ConfigApiDelegate;
-import com.camline.inframe.synapse.spacemonkey.model.CaConfig;
-import com.camline.inframe.synapse.spacemonkey.model.Config;
-import com.camline.inframe.synapse.spacemonkey.model.ServerConfig;
+import com.camline.inframe.synapse.spacemonkey.model.service.CaConfig;
+import com.camline.inframe.synapse.spacemonkey.model.service.Config;
+import com.camline.inframe.synapse.spacemonkey.model.service.ServerConfig;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.NativeWebRequest;
