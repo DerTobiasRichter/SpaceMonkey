@@ -135,7 +135,7 @@
                         <configuration>
                             <api>SpaceMonkeyRX</api>
                             <owner>camLine-DRS</owner>
-                            <version>1.0.0</version>
+                            <version>1.0.1</version>
                             <outputFile>target/space-monkey-rx.json</outputFile>
                         </configuration>
                     </execution>
@@ -155,9 +155,9 @@
                             <inputSpec>target/space-monkey.json</inputSpec>
                             <generatorName>spring</generatorName>
                             <packageName>${project.groupId}.spacemonkey</packageName>
-                            <apiPackage>${project.groupId}.spacemonkey.api</apiPackage>
+                            <apiPackage>${project.groupId}.spacemonkey.api.service</apiPackage>
                             <modelPackage>${project.groupId}.spacemonkey.model.service</modelPackage>
-                            <invokerPackage>${project.groupId}.spacemonkey.api</invokerPackage>
+                            <invokerPackage>${project.groupId}.spacemonkey.api.service</invokerPackage>
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>
                             <library>spring-boot</library>
@@ -184,9 +184,9 @@
                             <inputSpec>target/space-monkey-rx.json</inputSpec>
                             <generatorName>spring</generatorName>
                             <packageName>${project.groupId}.spacemonkey</packageName>
-                            <apiPackage>${project.groupId}.spacemonkey.api</apiPackage>
+                            <apiPackage>${project.groupId}.spacemonkey.api.space</apiPackage>
                             <modelPackage>${project.groupId}.spacemonkey.model.space</modelPackage>
-                            <invokerPackage>${project.groupId}.spacemonkey.api</invokerPackage>
+                            <invokerPackage>${project.groupId}.spacemonkey.api.space</invokerPackage>
                             <generateApiTests>false</generateApiTests>
                             <generateModelTests>false</generateModelTests>
                             <library>spring-boot</library>

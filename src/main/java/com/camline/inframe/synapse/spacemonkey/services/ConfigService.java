@@ -1,6 +1,6 @@
-package com.camline.inframe.synapse.spacemonkey.controller;
+package com.camline.inframe.synapse.spacemonkey.services;
 
-import com.camline.inframe.synapse.spacemonkey.api.ConfigApiDelegate;
+import com.camline.inframe.synapse.spacemonkey.api.service.ConfigApiDelegate;
 import com.camline.inframe.synapse.spacemonkey.model.service.CaConfig;
 import com.camline.inframe.synapse.spacemonkey.model.service.Config;
 import com.camline.inframe.synapse.spacemonkey.model.service.ServerConfig;
@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ConfigController implements ConfigApiDelegate {
+public class ConfigService implements ConfigApiDelegate {
 
     @Override
     public Optional<NativeWebRequest> getRequest() {

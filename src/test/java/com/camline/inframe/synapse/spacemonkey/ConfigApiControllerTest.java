@@ -1,6 +1,6 @@
 package com.camline.inframe.synapse.spacemonkey;
-import com.camline.inframe.synapse.spacemonkey.model.Config;
-import com.camline.inframe.synapse.spacemonkey.api.ConfigApiDelegate;
+import com.camline.inframe.synapse.spacemonkey.model.service.Config;
+import com.camline.inframe.synapse.spacemonkey.api.service.ConfigApiDelegate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
