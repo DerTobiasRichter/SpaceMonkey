@@ -43,7 +43,7 @@
         <!-- Spring initial non-functional dependencies -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-webflux</artifactId>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -61,10 +61,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-webflux</artifactId>
-        </dependency>
+
         <!-- May be required soon -->
 
         <!--
@@ -124,10 +121,10 @@
                             <goal>download</goal>
                         </goals>
                         <configuration>
-                            <api>SpaceMonkey</api>
+                            <api>Space-Monkey-Rx</api>
                             <owner>camLine-DRS</owner>
                             <version>1.0.0</version>
-                            <outputFile>target/space-monkey.json</outputFile>
+                            <outputFile>target/space-monkey-rx.json</outputFile>
                         </configuration>
                     </execution>
                     <execution>
@@ -137,10 +134,10 @@
                             <goal>download</goal>
                         </goals>
                         <configuration>
-                            <api>SpaceMonkeyRX</api>
+                            <api>Space-Api-Rx</api>
                             <owner>camLine-DRS</owner>
                             <version>1.0.1</version>
-                            <outputFile>target/space-monkey-rx.json</outputFile>
+                            <outputFile>target/space-api-rx.json</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -156,7 +153,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>target/space-monkey.json</inputSpec>
+                            <inputSpec>target/space-monkey-rx.json</inputSpec>
                             <generatorName>spring</generatorName>
                             <packageName>${project.groupId}.spacemonkey</packageName>
                             <apiPackage>${project.groupId}.spacemonkey.api.service</apiPackage>
@@ -169,7 +166,7 @@
                             <skipOperationExample>true</skipOperationExample>
                             <generateSupportingFiles>false</generateSupportingFiles>
                             <configOptions>
-                                <reactive>false</reactive>
+                                <reactive>true</reactive>
                                 <delegatePattern>true</delegatePattern>
                                 <interfaceOnly>false</interfaceOnly>
                                 <sourceFolder>src/main/java</sourceFolder>
@@ -185,7 +182,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>target/space-monkey-rx.json</inputSpec>
+                            <inputSpec>target/space-api-rx.json</inputSpec>
                             <generatorName>spring</generatorName>
                             <packageName>${project.groupId}.spacemonkey</packageName>
                             <apiPackage>${project.groupId}.spacemonkey.api.space</apiPackage>

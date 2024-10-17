@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import java.time.OffsetDateTime;
@@ -20,9 +19,9 @@ import java.util.List;
 
 @WebFluxTest(CorrectiveActionController.class)
 @AutoConfigureWebTestClient
-class CorrectiveActionControllerTest {
+class CorrectiveActionControllerTest extends SpaceMonkeyTestUtils {
 
-    private final static String BASE_URL = "/fix/space/corrective-action";
+    private final static String CORRECTIVE_ACTION = "/corrective-action";
 
     private final static String TRACKING_UNIT_NAME = "spacemonkey";
     private final static  Long SAMPLE_ID = 12345L;
@@ -72,15 +71,15 @@ class CorrectiveActionControllerTest {
     @Test
     void getCorrectiveActionService() {
         webTestClient.get()
-                .uri(BASE_URL)
+                .uri(SPACE_URL + CORRECTIVE_ACTION)
                 .exchange()
-                .expectStatus().isEqualTo(HttpStatusCode.valueOf(418))
+                .expectStatus().isEqualTo(HttpStatusCode.valueOf(200))
                 .expectBody(ServiceResponce.class).consumeWith(
                         entityExchangeResult -> {
                             ServiceResponce serviceResponce = entityExchangeResult.getResponseBody();
 
                             Assertions.assertNotNull(serviceResponce);
-                            Assertions.assertEquals("I'm a Tea Pot. ", serviceResponce.getMessage());
+                            Assertions.assertEquals("I'm a Tea Pot.", serviceResponce.getMessage());
                             Assertions.assertEquals(properties.getDurationQuantity(), serviceResponce.getDurrationquantity());
                             Assertions.assertTrue(OffsetDateTime.now().isAfter(serviceResponce.getDatetime()));
                             Assertions.assertTrue(serviceResponce.getDurration() >= 0);

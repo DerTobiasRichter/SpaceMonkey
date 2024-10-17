@@ -1,36 +1,33 @@
 package com.camline.inframe.synapse.spacemonkey.integration;
-import com.camline.inframe.synapse.spacemonkey.model.service.Config;
-import com.camline.inframe.synapse.spacemonkey.api.service.ConfigApiDelegate;
+import com.camline.inframe.synapse.spacemonkey.model.space.ServiceResponce;
+import com.camline.inframe.synapse.spacemonkey.services.ConfigController;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
+import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
+import org.springframework.http.HttpStatus;
 
 import org.junit.jupiter.api.Test;
-import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import org.springframework.test.web.reactive.server.WebTestClient;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-class ConfigApiControllerTest {
+@WebFluxTest(ConfigController.class)
+@AutoConfigureWebTestClient
+class ConfigApiControllerTest extends SpaceMonkeyTestUtils {
+
+
+    private final static String INFO = "/info";
 
     @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private ConfigApiDelegate configApiDelegate;
+    private WebTestClient webTestClient;
 
     @Test
-    void getConfigTest() throws Exception {
-        given(configApiDelegate.getConfig()).willReturn(ResponseEntity.ok(new Config()));
+    void getConfigTest() {
 
-        mvc.perform(MockMvcRequestBuilders
-                        .get("/config")
-                        .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
+        webTestClient.get()
+                .uri(CONFIG_URL + INFO)
+                .exchange()
+                .expectStatus().isEqualTo(HttpStatus.OK)
+                .expectBody(ServiceResponce.class).consumeWith(
+                        entityExchangeResult -> {});
+
     }
 }
