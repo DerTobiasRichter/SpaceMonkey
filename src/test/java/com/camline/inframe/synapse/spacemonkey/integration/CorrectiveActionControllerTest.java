@@ -76,15 +76,14 @@ class CorrectiveActionControllerTest {
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatusCode.valueOf(418))
                 .expectBody(ServiceResponce.class).consumeWith(
-                        listEntityExchangeResult -> {
-                            ServiceResponce serviceResponce = listEntityExchangeResult.getResponseBody();
+                        entityExchangeResult -> {
+                            ServiceResponce serviceResponce = entityExchangeResult.getResponseBody();
 
                             Assertions.assertNotNull(serviceResponce);
                             Assertions.assertEquals("I'm a Tea Pot. ", serviceResponce.getMessage());
                             Assertions.assertEquals(properties.getDurationQuantity(), serviceResponce.getDurrationquantity());
                             Assertions.assertTrue(OffsetDateTime.now().isAfter(serviceResponce.getDatetime()));
                             Assertions.assertTrue(serviceResponce.getDurration() >= 0);
-
                         }
                 );
 
