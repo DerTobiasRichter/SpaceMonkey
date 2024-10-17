@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,24 +71,25 @@ class CorrectiveActionControllerTest {
 
     @Test
     void getCorrectiveActionService() {
-//        webTestClient.get()
-//                .uri(BASE_URL)
-//                .exchange()
-//                .expectStatus().isEqualTo(HttpStatusCode.valueOf(418))
-//                .expectBody();
-
-        EntityExchangeResult<ServiceResponce> responce = webTestClient.get()
+        webTestClient.get()
                 .uri(BASE_URL)
                 .exchange()
                 .expectStatus().isEqualTo(HttpStatusCode.valueOf(418))
-                .expectBody(ServiceResponce.class)
-                .returnResult();
+                .expectBody(ServiceResponce.class).consumeWith(
+                        listEntityExchangeResult -> {
+                            ServiceResponce serviceResponce = listEntityExchangeResult.getResponseBody();
 
-        ServiceResponce serviceResponce = responce.getResponseBody();
+                            Assertions.assertNotNull(serviceResponce);
+                            Assertions.assertEquals("I'm a Tea Pot. ", serviceResponce.getMessage());
+                            Assertions.assertEquals(properties.getDurationQuantity(), serviceResponce.getDurrationquantity());
+                            Assertions.assertTrue(OffsetDateTime.now().isAfter(serviceResponce.getDatetime()));
+                            Assertions.assertTrue(serviceResponce.getDurration() >= 0);
 
-        Assertions.assertEquals("I'm a Tea Pot. ", serviceResponce.getMessage());
-//        Assertions.assertEquals(properties.getDurationQuantity(), serviceResponce.getDurrationquantity());
-//        Assertions.assertTrue(OffsetDateTime.now().isAfter(serviceResponce.getDatetime()));
-//        Assertions.assertTrue(serviceResponce.getDurration() >= 0);
+                        }
+                );
+
+
     }
+
+
 }

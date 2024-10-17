@@ -3,7 +3,6 @@ package com.camline.inframe.synapse.spacemonkey.services.space;
 import com.camline.inframe.synapse.spacemonkey.model.space.CaSelectedSamplesData;
 import com.camline.inframe.synapse.spacemonkey.model.space.ServiceResponce;
 import com.camline.inframe.synapse.spacemonkey.services.config.Properties;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,13 +25,11 @@ public class CorrectiveActionController /**implements SpaceApiDelegate**/ {
 
     //@Override
     @GetMapping("/corrective-action")
-    public Mono<ResponseEntity<ServiceResponce>> getCorrectiveAction(HttpServletRequest request){
+    public Mono<ResponseEntity<ServiceResponce>> getCorrectiveAction( ){
         OffsetDateTime start = OffsetDateTime.now();
 
-        String clientIp = request.getRemoteAddr();
-
         ServiceResponce responce = new ServiceResponce();
-        responce.setMessage("I'm a Tea Pot. " + clientIp);
+        responce.setMessage("I'm a Tea Pot. ");
         responce.setDurrationquantity(properties.getDurationQuantity());
         responce.setDatetime(start);
         OffsetDateTime end = OffsetDateTime.now();
