@@ -1,4 +1,4 @@
-package com.camline.inframe.synapse.spacemonkey;
+package com.camline.inframe.synapse.spacemonkey.integration;
 import com.camline.inframe.synapse.spacemonkey.model.service.Config;
 import com.camline.inframe.synapse.spacemonkey.api.service.ConfigApiDelegate;
 import org.springframework.beans.factory.annotation.Autowired;

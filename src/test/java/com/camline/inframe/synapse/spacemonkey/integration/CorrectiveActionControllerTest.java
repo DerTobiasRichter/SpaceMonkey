@@ -1,33 +1,27 @@
-package com.camline.inframe.synapse.spacemonkey;
+package com.camline.inframe.synapse.spacemonkey.integration;
 
 import com.camline.inframe.synapse.spacemonkey.model.space.*;
-import com.camline.inframe.synapse.spacemonkey.services.space.CorrectiveActionService;
+import com.camline.inframe.synapse.spacemonkey.services.config.Properties;
+import com.camline.inframe.synapse.spacemonkey.services.space.CorrectiveActionController;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
-import org.springframework.mock.http.server.reactive.MockServerHttpRequest;
-import org.springframework.mock.web.server.MockServerWebExchange;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.test.web.reactive.server.EntityExchangeResult;
 import org.springframework.test.web.reactive.server.WebTestClient;
-import reactor.core.publisher.Mono;
 
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.BDDMockito.given;
-import static org.testng.AssertJUnit.assertTrue;
-import static org.testng.AssertJUnit.fail;
+@WebFluxTest(CorrectiveActionController.class)
+@AutoConfigureWebTestClient
+class CorrectiveActionControllerTest {
 
-@WebFluxTest(CorrectiveActionService.class)
-public class SpaceRxCorrectiveActionServiceTest {
+    private final static String BASE_URL = "/fix/space/corrective-action";
 
     private final static String TRACKING_UNIT_NAME = "spacemonkey";
     private final static  Long SAMPLE_ID = 12345L;
@@ -36,18 +30,15 @@ public class SpaceRxCorrectiveActionServiceTest {
     private CaSelectedSamplesData validCaSelectedSamplesData = null;
 
     @Autowired
-    WebTestClient webTestClient;
+    private WebTestClient webTestClient;
 
     @MockBean
-    CorrectiveActionService correctiveActionService;
-
-    @Mock
-    private MockServerWebExchange mockedExchange;
+    Properties properties;
 
     @BeforeEach
     public void setup() {
 
-        webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();
+        //webTestClient = WebTestClient.bindToServer().baseUrl("http://localhost:8080").build();
 
         validCaSelectedSamplesData = new CaSelectedSamplesData();
         CaWithSamples sampleCAs = new CaWithSamples();
@@ -79,19 +70,24 @@ public class SpaceRxCorrectiveActionServiceTest {
 
     @Test
     void getCorrectiveActionService() {
+//        webTestClient.get()
+//                .uri(BASE_URL)
+//                .exchange()
+//                .expectStatus().isEqualTo(HttpStatusCode.valueOf(418))
+//                .expectBody();
 
-        OffsetDateTime startTime = OffsetDateTime.now();
-
-        MockitoAnnotations.openMocks(this);
-        MockServerHttpRequest request = MockServerHttpRequest.get("/space/correctiveaction").build();
-        this.mockedExchange = MockServerWebExchange.from(request);
-        given(correctiveActionService.getCorrectiveAction(mockedExchange)).willReturn(Mono.empty());
-
-        webTestClient.get()
-                .uri("/space/correctiveaction")
-                .accept(MediaType.APPLICATION_JSON)
+        EntityExchangeResult<ServiceResponce> responce = webTestClient.get()
+                .uri(BASE_URL)
                 .exchange()
-                .expectStatus().isEqualTo(418);
+                .expectStatus().isEqualTo(HttpStatusCode.valueOf(418))
+                .expectBody(ServiceResponce.class)
+                .returnResult();
 
+        ServiceResponce serviceResponce = responce.getResponseBody();
+
+        Assertions.assertEquals("I'm a Tea Pot. ", serviceResponce.getMessage());
+//        Assertions.assertEquals(properties.getDurationQuantity(), serviceResponce.getDurrationquantity());
+//        Assertions.assertTrue(OffsetDateTime.now().isAfter(serviceResponce.getDatetime()));
+//        Assertions.assertTrue(serviceResponce.getDurration() >= 0);
     }
 }

@@ -1,4 +1,4 @@
-package com.camline.inframe.synapse.spacemonkey;
+package com.camline.inframe.synapse.spacemonkey.unit;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
