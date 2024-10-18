@@ -1,4 +1,4 @@
-package com.camline.inframe.synapse.spacemonkey.services;
+package com.camline.inframe.synapse.spacemonkey.controller;
 
 import com.camline.inframe.synapse.spacemonkey.api.service.ConfigApiDelegate;
 import com.camline.inframe.synapse.spacemonkey.model.service.CaConfig;

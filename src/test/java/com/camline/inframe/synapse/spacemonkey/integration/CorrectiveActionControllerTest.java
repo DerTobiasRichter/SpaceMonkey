@@ -1,8 +1,8 @@
 package com.camline.inframe.synapse.spacemonkey.integration;
 
 import com.camline.inframe.synapse.spacemonkey.model.space.*;
-import com.camline.inframe.synapse.spacemonkey.services.config.Properties;
-import com.camline.inframe.synapse.spacemonkey.services.space.CorrectiveActionController;
+import com.camline.inframe.synapse.spacemonkey.controller.config.Properties;
+import com.camline.inframe.synapse.spacemonkey.controller.space.CorrectiveActionController;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
