@@ -27,7 +27,7 @@ public class ConfigController implements ConfigApiDelegate {
 
     @Override
     @GetMapping("/info")
-    public Mono<ResponseEntity<Config>> getConfig(ServerWebExchange exchange) {
+    public Mono<ResponseEntity<Config>> getConfig(final ServerWebExchange exchange) {
 
         CaConfig spaceCaConfig = new CaConfig();
         spaceCaConfig.setName("hupe.blau.HOLD");
