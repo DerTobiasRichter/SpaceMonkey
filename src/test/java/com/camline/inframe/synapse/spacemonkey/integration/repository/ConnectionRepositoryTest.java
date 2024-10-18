@@ -7,6 +7,7 @@ import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.server.RequestPath;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Flux;
@@ -22,6 +23,7 @@ import org.junit.jupiter.api.BeforeEach;
 
 
 @SpringBootTest
+@ActiveProfiles("dev-test")
 class ConnectionRepositoryTest {
 
     @Autowired
@@ -47,7 +49,7 @@ class ConnectionRepositoryTest {
         List<Connection> connectionList = new ArrayList<>();
         connectionList.add(testConnection);
 
-        connectionRepository.saveAll(connectionList);
+        connectionRepository.saveAll(connectionList).blockLast();
     }
 
     @AfterEach
