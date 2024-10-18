@@ -10,6 +10,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import reactor.core.publisher.Flux;
 
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +31,7 @@ class ConnectionRepositoryTest {
 
         Connection testConnection = new Connection();
 
-
+        testConnection.setInboundTime(OffsetDateTime.now());
         testConnection.setRemoteAddress("127.0.0.1");
         testConnection.setAddress("127.0.0.1");
         testConnection.setHostName("localhost");
@@ -50,7 +51,7 @@ class ConnectionRepositoryTest {
 
     @AfterEach
     void tearDown(){
-       connectionRepository.deleteAll().block();
+       //connectionRepository.deleteAll().block();
     }
 
     @Test

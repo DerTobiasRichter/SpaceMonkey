@@ -1,9 +1,11 @@
 package com.camline.inframe.synapse.spacemonkey.controller.space;
 
 import com.camline.inframe.synapse.spacemonkey.api.space.SpaceApiDelegate;
+import com.camline.inframe.synapse.spacemonkey.domain.service.Connection;
 import com.camline.inframe.synapse.spacemonkey.model.space.CaSelectedSamplesData;
 import com.camline.inframe.synapse.spacemonkey.model.space.ServiceResponce;
 import com.camline.inframe.synapse.spacemonkey.controller.config.Properties;
+import com.camline.inframe.synapse.spacemonkey.service.ConnectionServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -19,6 +21,7 @@ import reactor.core.publisher.Mono;
 
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
+import java.time.Duration;
 import java.time.OffsetDateTime;
 
 /**
@@ -34,10 +37,13 @@ public class CorrectiveActionController implements SpaceApiDelegate {
 
 
     private static final Logger log = LoggerFactory.getLogger(CorrectiveActionController.class);
-    private final Properties properties;
 
-    public CorrectiveActionController(Properties properties) {
+    private final Properties properties;
+    private final ConnectionServiceImpl connectionService;
+
+    public CorrectiveActionController(Properties properties, ConnectionServiceImpl connectionService) {
         this.properties = properties;
+        this.connectionService = connectionService;
     }
 
     @Override
@@ -45,40 +51,56 @@ public class CorrectiveActionController implements SpaceApiDelegate {
     public Mono<ResponseEntity<ServiceResponce>> getCorrectiveAction( final ServerWebExchange exchange) {
         OffsetDateTime start = OffsetDateTime.now();
 
-        InetSocketAddress remoteAddress = exchange.getRequest().getRemoteAddress();
-        assert remoteAddress   != null;
-
-        InetAddress address = remoteAddress.getAddress();
-        String hostName = remoteAddress.getHostName();
-        String hostString = remoteAddress.getHostString();
-        int port = remoteAddress.getPort();
-
-        InetSocketAddress localAddress = exchange.getRequest().getLocalAddress();
-        RequestPath path = exchange.getRequest().getPath();
-        MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
-
-        log.atError().log( "Address: " + address);
-        log.atError().log( "HostName: " + hostName);
-        log.atError().log("HostString: " + hostString);
-        log.atError().log("Port: " + port);
-        log.atError().log("LocalAddress: " + localAddress);
-        log.atError().log("Path: " + path);
-        log.atError().log("QueryParams: " + queryParams);
+        saveInboundConnections(exchange, start);
 
         ServiceResponce response = new ServiceResponce();
         response.setMessage("I'm a Tea Pot.");
         response.setDurrationquantity(properties.getDurationQuantity());
         response.setDatetime(start);
         OffsetDateTime end = OffsetDateTime.now();
-        response.setDurration(end.toEpochSecond() - start.toEpochSecond());
+        response.setDurration(Duration.between(start.toInstant(),end.toInstant()).toNanos());
 
         return Mono.just(new ResponseEntity<>(response, HttpStatus.OK));
+    }
+
+    private void saveInboundConnections(ServerWebExchange exchange, OffsetDateTime now) {
+        InetSocketAddress remoteAddress = exchange.getRequest().getRemoteAddress();
+        assert remoteAddress   != null;
+
+        InetAddress address = remoteAddress.getAddress();
+        String hostName = remoteAddress.getHostName();
+        int port = remoteAddress.getPort();
+
+        InetSocketAddress localAddress = exchange.getRequest().getLocalAddress();
+        RequestPath path = exchange.getRequest().getPath();
+        MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
+
+        log.atDebug().log( "InboundTime: " + now);
+        log.atDebug().log( "Address: " + address);
+        log.atDebug().log( "HostName: " + hostName);
+        log.atDebug().log("Port: " + port);
+        log.atDebug().log("LocalAddress: " + localAddress);
+        log.atDebug().log("Path: " + path);
+        log.atDebug().log("QueryParams: " + queryParams);
+
+        Connection connection = new Connection();
+        connection.setInboundTime(now);
+        connection.setAddress(address.toString());
+        connection.setHostName(hostName);
+        connection.setPort(port);
+        assert localAddress != null;
+        connection.setLocalAddress(localAddress.toString());
+        connection.setPath(path.toString());
+        connection.setQueryParams(queryParams);
+
+        connectionService.setConnection(connection)
+                .doOnSuccess(conn -> log.info("Connection saved: {}", conn))
+                .subscribe();
     }
 
     @Override
     @PostMapping("/corrective-action")
     public Mono<ResponseEntity<ServiceResponce>> setCorrectiveAction(Mono<CaSelectedSamplesData> caSelectedSamplesData, ServerWebExchange exchange) {
-
         return Mono.empty();
     }
 

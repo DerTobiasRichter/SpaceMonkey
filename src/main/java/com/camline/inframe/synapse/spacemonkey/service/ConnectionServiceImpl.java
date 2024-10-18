@@ -22,6 +22,6 @@ public class ConnectionServiceImpl implements ConnectionService {
 
     @Override
     public Mono<Connection> setConnection(Connection connection) {
-        return this.connectionRepository.save(connection);
+        return this.connectionRepository.save(connection).thenReturn(connection);
     }
 }
