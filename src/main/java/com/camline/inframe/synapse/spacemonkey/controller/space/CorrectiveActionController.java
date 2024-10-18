@@ -4,8 +4,6 @@ import com.camline.inframe.synapse.spacemonkey.api.space.SpaceApiDelegate;
 import com.camline.inframe.synapse.spacemonkey.model.space.CaSelectedSamplesData;
 import com.camline.inframe.synapse.spacemonkey.model.space.ServiceResponce;
 import com.camline.inframe.synapse.spacemonkey.controller.config.Properties;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,15 +17,15 @@ import java.time.OffsetDateTime;
 
 /**
  * Controller handling corrective actions in the space API.
- *
- * Info: RequestMappings are for Unit Tests not necessarily for the API mappings
+ * <p>
+ *  Info: RequestMappings are for Unit Tests not necessarily for the API mappings
+ * </p>
  */
 
 @RestController
 @RequestMapping("/space/")
 public class CorrectiveActionController implements SpaceApiDelegate {
 
-    private static final Logger log = LoggerFactory.getLogger(CorrectiveActionController.class);
     private final Properties properties;
 
     public CorrectiveActionController(Properties properties) {
