@@ -6,7 +6,7 @@ import com.camline.inframe.synapse.spacemonkey.domain.service.Connection;
 import com.camline.inframe.synapse.spacemonkey.model.space.CaSelectedSamplesData;
 import com.camline.inframe.synapse.spacemonkey.model.space.ServiceResponce;
 import com.camline.inframe.synapse.spacemonkey.controller.config.Properties;
-import com.camline.inframe.synapse.spacemonkey.service.ConnectionServiceImpl;
+import com.camline.inframe.synapse.spacemonkey.service.impl.ConnectionServiceImpl;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

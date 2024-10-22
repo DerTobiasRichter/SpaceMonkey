@@ -1,7 +1,8 @@
-package com.camline.inframe.synapse.spacemonkey.service;
+package com.camline.inframe.synapse.spacemonkey.service.impl;
 
 import com.camline.inframe.synapse.spacemonkey.domain.service.Connection;
 import com.camline.inframe.synapse.spacemonkey.repository.ConnectionRepository;
+import com.camline.inframe.synapse.spacemonkey.service.ConnectionService;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
