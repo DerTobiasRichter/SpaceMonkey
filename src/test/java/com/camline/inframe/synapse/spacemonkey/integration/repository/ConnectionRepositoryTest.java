@@ -2,6 +2,7 @@ package com.camline.inframe.synapse.spacemonkey.integration.repository;
 
 import com.camline.inframe.synapse.spacemonkey.domain.service.Connection;
 import com.camline.inframe.synapse.spacemonkey.repository.ConnectionRepository;
+import com.camline.inframe.synapse.spacemonkey.utility.ConnectionEntities;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -29,29 +30,15 @@ class ConnectionRepositoryTest {
     @BeforeEach
     void setup() {
 
-        Connection testConnection = new Connection();
-
-        testConnection.setInboundTime(OffsetDateTime.now());
-        testConnection.setRemoteAddress("127.0.0.1");
-        testConnection.setAddress("127.0.0.1");
-        testConnection.setHostName("localhost");
-        testConnection.setPort(8080);
-        testConnection.setLocalAddress("127.0.0.1");
-        testConnection.setPath("/test/mongo/connection");
-        MultiValueMap<String, String> queryParams = new LinkedMultiValueMap<>();
-        queryParams.add("param1", "value1");
-        queryParams.add("param2", "value2");
-        testConnection.setQueryParams(queryParams);
-
         List<Connection> connectionList = new ArrayList<>();
-        connectionList.add(testConnection);
+        connectionList.add(ConnectionEntities.getSimpleTestConnection());
 
         connectionRepository.saveAll(connectionList).blockLast();
     }
 
     @AfterEach
     void tearDown(){
-       //connectionRepository.deleteAll().block();
+       connectionRepository.deleteAll().block();
     }
 
     @Test

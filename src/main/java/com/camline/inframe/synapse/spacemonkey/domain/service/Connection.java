@@ -17,13 +17,12 @@ public class Connection {
     private String inboundTime;
 
     private String remoteAddress;
-    private String address;
-    private String hostName;
-    private int port;
+    private String remotehostName;
+    private int remotePort;
 
-    private String  localAddress;
-    private String path;
-    private MultiValueMap<String, String> queryParams;
+    private String localAddress;
+    private String localPath;
+    private MultiValueMap<String, String> localQueryParams;
 
     public String getId() {
         return id;
@@ -34,8 +33,10 @@ public class Connection {
     }
 
     public void setInboundTime(OffsetDateTime inboundTime) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss Z");
-        this.inboundTime = inboundTime.format(formatter);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS ZZZ");
+        String timeString = inboundTime.format(formatter);
+
+        this.inboundTime = timeString;
     }
 
     public String getRemoteAddress() {
@@ -46,28 +47,20 @@ public class Connection {
         this.remoteAddress = remoteAddress;
     }
 
-    public String getAddress() {
-        return address;
+    public String getRemotehostName() {
+        return remotehostName;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setRemoteHostName(String remotehostName) {
+        this.remotehostName = remotehostName;
     }
 
-    public String getHostName() {
-        return hostName;
+    public int getRemotePort() {
+        return remotePort;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
-
-    public int getPort() {
-        return port;
-    }
-
-    public void setPort(int port) {
-        this.port = port;
+    public void setRemotePort(int remotePort) {
+        this.remotePort = remotePort;
     }
 
     public String getLocalAddress() {
@@ -78,46 +71,45 @@ public class Connection {
         this.localAddress = localAddress;
     }
 
-    public String getPath() {
-        return path;
+    public String getLocalPath() {
+        return localPath;
     }
 
-    public void setPath(String path) {
-        this.path = path;
+    public void setLocalPath(String localPath) {
+        this.localPath = localPath;
     }
 
-    public MultiValueMap<String, String> getQueryParams() {
-        return queryParams;
+    public MultiValueMap<String, String> getLocalQueryParams() {
+        return localQueryParams;
     }
 
-    public void setQueryParams(MultiValueMap<String, String> queryParams) {
-        this.queryParams = queryParams;
+    public void setLocalQueryParams(MultiValueMap<String, String> localQueryParams) {
+        this.localQueryParams = localQueryParams;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Connection that)) return false;
-        return getPort() == that.getPort() && Objects.equals(getId(), that.getId()) && Objects.equals(getInboundTime(), that.getInboundTime()) && Objects.equals(getRemoteAddress(), that.getRemoteAddress()) && Objects.equals(getAddress(), that.getAddress()) && Objects.equals(getHostName(), that.getHostName()) && Objects.equals(getLocalAddress(), that.getLocalAddress()) && Objects.equals(getPath(), that.getPath()) && Objects.equals(getQueryParams(), that.getQueryParams());
+        return getRemotePort() == that.getRemotePort() && Objects.equals(getId(), that.getId()) && Objects.equals(getInboundTime(), that.getInboundTime()) && Objects.equals(getRemoteAddress(), that.getRemoteAddress()) && Objects.equals(getRemotehostName(), that.getRemotehostName()) && Objects.equals(getLocalAddress(), that.getLocalAddress()) && Objects.equals(getLocalPath(), that.getLocalPath()) && Objects.equals(getLocalQueryParams(), that.getLocalQueryParams());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getInboundTime(), getRemoteAddress(), getAddress(), getHostName(), getPort(), getLocalAddress(), getPath(), getQueryParams());
+        return Objects.hash(getId(), getInboundTime(), getRemoteAddress(), getRemotehostName(), getRemotePort(), getLocalAddress(), getLocalPath(), getLocalQueryParams());
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Connection{");
         sb.append("id='").append(id).append('\'');
-        sb.append(", inboundTime=").append(inboundTime);
+        sb.append(", inboundTime='").append(inboundTime).append('\'');
         sb.append(", remoteAddress='").append(remoteAddress).append('\'');
-        sb.append(", address='").append(address).append('\'');
-        sb.append(", hostName='").append(hostName).append('\'');
-        sb.append(", port=").append(port);
+        sb.append(", remotehostName='").append(remotehostName).append('\'');
+        sb.append(", remotePort=").append(remotePort);
         sb.append(", localAddress='").append(localAddress).append('\'');
-        sb.append(", path='").append(path).append('\'');
-        sb.append(", queryParams=").append(queryParams);
+        sb.append(", localPath='").append(localPath).append('\'');
+        sb.append(", localQueryParams=").append(localQueryParams);
         sb.append('}');
         return sb.toString();
     }
