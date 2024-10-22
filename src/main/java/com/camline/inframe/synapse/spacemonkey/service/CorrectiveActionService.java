@@ -7,7 +7,7 @@ import reactor.core.publisher.Mono;
 
 public interface CorrectiveActionService {
 
-    Flux<CaSelectedSamplesData> setSelectedSamplesData(Mono<CaSelectedSamplesData> caSelectedSamplesDataMono);
+    Mono<CaSelectedSamplesData> setSelectedSamplesData(Mono<CaSelectedSamplesData> caSelectedSamplesDataMono);
 
     Flux<CaSelectedSamplesData> setSelectedSamplesData(Flux<CaSelectedSamplesData> caSelectedSamplesDataFlux);
 

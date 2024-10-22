@@ -1,0 +1,121 @@
+{
+	"info": {
+		"_postman_id": "352022fb-fa20-4e55-a1cf-ef49fcfa25bd",
+		"name": "Space Monkey",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "3518467"
+	},
+	"item": [
+		{
+			"name": "Config/Info",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/config/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"config",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Space/Corrective-Action",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/config/info",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"config",
+						"info"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Space/Corrective-Action",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"caContext\": {\r\n    \"ldsId\": 12345,\r\n    \"userStation\": \"Test Station Sirius AB1-a\",\r\n    \"author\": \"Test User\",\r\n    \"eventDate\": 1729595963399\r\n  },\r\n  \"caSamples\": [\r\n    {\r\n      \"correctiveAction\": {\r\n        \"caId\": null,\r\n        \"caName\": \"ACT.UNIT:HOLD\",\r\n        \"caAttributes\": [\r\n          \"ACT.UNIT:HOLD\",\r\n          \"ACT.UNIT:HOLD#reason=Hold Reason 1\",\r\n          \"ACT.UNIT:HOLD#code=Split Hold\",\r\n          \"immediate\"\r\n        ],\r\n        \"caTag\": []\r\n      },\r\n      \"samples\": [\r\n        {\r\n          \"sampleId\": 12345,\r\n          \"sampleDate\": null,\r\n          \"prioValuationId\": null,\r\n          \"allValuationsIds\": [],\r\n          \"spcFlag\": null,\r\n          \"extFlag\": null,\r\n          \"violationComment\": null,\r\n          \"externalComment\": null,\r\n          \"previousAssignedCAId\": null,\r\n          \"sampleChart\": null,\r\n          \"sampleExtractorKeys\": [\r\n            {\r\n              \"keyId\": null,\r\n              \"keyName\": \"WaferId\",\r\n              \"keyValue\": \"spacemonkey\",\r\n              \"keyType\": null\r\n            }\r\n          ],\r\n          \"sampleTags\": [],\r\n          \"sampleAttributes\": []\r\n        }\r\n      ]\r\n    }\r\n  ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/space/corrective-action",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"space",
+						"corrective-action"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

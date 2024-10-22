@@ -7,6 +7,7 @@ import com.camline.inframe.synapse.spacemonkey.model.space.CaSelectedSamplesData
 import com.camline.inframe.synapse.spacemonkey.model.space.ServiceResponce;
 import com.camline.inframe.synapse.spacemonkey.controller.config.Properties;
 import com.camline.inframe.synapse.spacemonkey.service.impl.ConnectionServiceImpl;
+import com.camline.inframe.synapse.spacemonkey.service.impl.CorrectiveActionServiceImpl;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +44,13 @@ public class CorrectiveActionController implements SpaceApiDelegate {
 
     private final Properties properties;
     private final ConnectionServiceImpl connectionService;
+    private final CorrectiveActionServiceImpl correctiveActionService;
     private final Environment environment;
 
-    public CorrectiveActionController(Properties properties, ConnectionServiceImpl connectionService, Environment environment) {
+    public CorrectiveActionController(Properties properties, ConnectionServiceImpl connectionService, CorrectiveActionServiceImpl correctiveActionService, Environment environment) {
         this.properties = properties;
         this.connectionService = connectionService;
+        this.correctiveActionService = correctiveActionService;
         this.environment = environment;
     }
 
@@ -64,13 +67,16 @@ public class CorrectiveActionController implements SpaceApiDelegate {
 
     @Override
     @PostMapping("/corrective-action")
-    public Mono<ResponseEntity<ServiceResponce>> setCorrectiveAction(Mono<CaSelectedSamplesData> caSelectedSamplesData, ServerWebExchange exchange) {
+    public Mono<ResponseEntity<ServiceResponce>> setCorrectiveAction(Mono<CaSelectedSamplesData> caSelectedSamplesDataMono, ServerWebExchange exchange) {
 
         OffsetDateTime start = saveInboundConnections(exchange);
 
-        final ServiceResponce serviceResponse = getServiceResponce(start, ServiceResponseMessages.SERVICE_RESPONSE_PROCESSED);
-
-        return Mono.just(new ResponseEntity<>(serviceResponse, HttpStatus.OK));
+        return caSelectedSamplesDataMono
+                .flatMap(caSelectedSamplesData -> this.correctiveActionService.setSelectedSamplesData(Mono.just(caSelectedSamplesData)))
+                .flatMap(savedData -> {
+                    final ServiceResponce serviceResponse = getServiceResponce(start, ServiceResponseMessages.SERVICE_RESPONSE_PROCESSED);
+                    return Mono.just(new ResponseEntity<>(serviceResponse, HttpStatus.OK));
+                });
     }
 
     private @NotNull ServiceResponce getServiceResponce(OffsetDateTime start, ServiceResponseMessages message) {

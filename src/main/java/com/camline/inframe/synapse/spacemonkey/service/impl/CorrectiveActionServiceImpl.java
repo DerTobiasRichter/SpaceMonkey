@@ -18,10 +18,9 @@ public class CorrectiveActionServiceImpl implements CorrectiveActionService {
     }
 
     @Override
-    public Flux<CaSelectedSamplesData> setSelectedSamplesData(Mono<CaSelectedSamplesData> caSelectedSamplesDataMono) {
+    public Mono<CaSelectedSamplesData> setSelectedSamplesData(Mono<CaSelectedSamplesData> caSelectedSamplesDataMono) {
         return caSelectedSamplesDataMono
-                .flatMap(this.correctiveActionRepository::save)
-                .flux();
+                .flatMap(this.correctiveActionRepository::save);
     }
 
     @Override
