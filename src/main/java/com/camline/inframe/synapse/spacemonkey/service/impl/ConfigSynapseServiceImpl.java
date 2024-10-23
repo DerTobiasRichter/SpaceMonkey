@@ -25,9 +25,10 @@ public class ConfigSynapseServiceImpl implements ConfigSynapseService {
 
     @Override
     public Mono<SynapseConfig> initSynapse() {
-        this.configSynapseRepository.deleteAll();
         final var synapseHome = getDefaultSynapse();
-        return Mono.just(synapseHome).flatMap(this.configSynapseRepository::save);
+        return this.configSynapseRepository.deleteAll()
+                .then(Mono.just(synapseHome)
+                        .flatMap(this.configSynapseRepository::save));
     }
 
     @Override
@@ -64,12 +65,20 @@ public class ConfigSynapseServiceImpl implements ConfigSynapseService {
     public Mono<SynapseConfig> updateConfig(Mono<SynapseConfig> synapseConfigMono) {
         return createSynapse(synapseConfigMono);
     }
+    public Mono<SynapseConfig> getConfig() {
+        return configSynapseRepository.findAll().next();
+    }
 
     private @NotNull SynapseConfig getDefaultSynapse() {
+        String host = properties.getSynapseDefaultHost();
+        int port = Integer.parseInt(properties.getSynapseDefaultPort());
+        String description = properties.getSynapseDefaultDescription();
+        log.atError().log("Synapse Default:\nHost:" + host + "\nPort: " + port + "\nDescription: " + description);
+
         return SynapseConfigBuilder.aSynapseConfig()
-                .withHost(properties.getSynapseDefaultHost())
-                .withPort(Integer.getInteger(properties.getSynapseDefaultPort()))
-                .withDescription(properties.getSynapseDefaultDescription())
+                .withHost(host)
+                .withPort(port)
+                .withDescription(description)
                 .build();
     }
 
