@@ -1,6 +1,7 @@
 package com.camline.inframe.synapse.spacemonkey.domain.config;
 
 public final class SynapseConfigBuilder {
+    private String serviceName;
     private String host;
     private Integer port;
     private String description;
@@ -10,6 +11,11 @@ public final class SynapseConfigBuilder {
 
     public static SynapseConfigBuilder aSynapseConfig() {
         return new SynapseConfigBuilder();
+    }
+
+    public SynapseConfigBuilder withServiceName(String serviceName){
+        this.serviceName = serviceName;
+        return this;
     }
 
     public SynapseConfigBuilder withHost(String host) {
@@ -29,6 +35,7 @@ public final class SynapseConfigBuilder {
 
     public SynapseConfig build() {
         SynapseConfig synapseConfig = new SynapseConfig();
+        synapseConfig.setServiceName(serviceName);
         synapseConfig.setHost(host);
         synapseConfig.setPort(port);
         synapseConfig.setDescription(description);

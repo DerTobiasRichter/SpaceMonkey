@@ -18,6 +18,9 @@ public class Properties {
     private String mongoDbPort;
     @Value("${spring.data.mongodb.database:space-monkey}")
     private String mongoDbDatabase;
+
+    @Value("${space-monkey.service.connection.synapseConfig.servicename.default:Default-Synapse-MES-Service}")
+    private String synapseDefaultServiceName;
     @Value("${space-monkey.service.connection.synapseConfig.host.default:localhost}")
     private String synapseDefaultHost;
     @Value("${space-monkey.service.connection.synapseConfig.port.default:443}")
@@ -41,6 +44,10 @@ public class Properties {
         return mongoDbDatabase;
     }
 
+    public String getSynapseDefaultServiceName() {
+        return synapseDefaultServiceName;
+    }
+
     public String getSynapseDefaultHost() {
         return synapseDefaultHost;
     }
@@ -52,4 +59,6 @@ public class Properties {
     public String getSynapseDefaultDescription() {
         return synapseDefaultDescription;
     }
+
+
 }

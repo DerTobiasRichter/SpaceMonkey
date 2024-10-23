@@ -70,12 +70,18 @@ public class ConfigSynapseServiceImpl implements ConfigSynapseService {
     }
 
     private @NotNull SynapseConfig getDefaultSynapse() {
+        String serviceName = properties.getSynapseDefaultServiceName();
         String host = properties.getSynapseDefaultHost();
         int port = Integer.parseInt(properties.getSynapseDefaultPort());
         String description = properties.getSynapseDefaultDescription();
-        log.atError().log("Synapse Default:\nHost:" + host + "\nPort: " + port + "\nDescription: " + description);
+        log.atError().log("Synapse Default: \n\t\t\tServiceName:" +
+                serviceName + "\n\t\t\tHost:" +
+                host + "\n\t\t\tPort: " +
+                port + "\n\t\t\tDescription: " +
+                description);
 
         return SynapseConfigBuilder.aSynapseConfig()
+                .withServiceName(serviceName)
                 .withHost(host)
                 .withPort(port)
                 .withDescription(description)
