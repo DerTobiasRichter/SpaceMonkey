@@ -1,0 +1,76 @@
+package com.camline.inframe.synapse.spacemonkey.service.impl;
+
+import com.camline.inframe.synapse.spacemonkey.controller.config.Properties;
+import com.camline.inframe.synapse.spacemonkey.domain.config.SynapseConfig;
+import com.camline.inframe.synapse.spacemonkey.domain.config.SynapseConfigBuilder;
+import com.camline.inframe.synapse.spacemonkey.repository.ConfigSynapseRepository;
+import com.camline.inframe.synapse.spacemonkey.service.ConfigSynapseService;
+import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import reactor.core.publisher.Mono;
+
+@Service
+public class ConfigSynapseServiceImpl implements ConfigSynapseService {
+
+    private static final Logger log = LoggerFactory.getLogger(ConfigSynapseServiceImpl.class);
+    private final ConfigSynapseRepository configSynapseRepository;
+    private final Properties properties;
+
+    public ConfigSynapseServiceImpl(ConfigSynapseRepository configSynapseRepository, Properties properties) {
+        this.configSynapseRepository = configSynapseRepository;
+        this.properties=properties;
+    }
+
+    @Override
+    public Mono<SynapseConfig> initSynapse() {
+        this.configSynapseRepository.deleteAll();
+        final var synapseHome = getDefaultSynapse();
+        return Mono.just(synapseHome).flatMap(this.configSynapseRepository::save);
+    }
+
+    @Override
+    public Mono<SynapseConfig> createSynapse(Mono<SynapseConfig> synapseConfigMono) {
+        return synapseConfigMono.flatMap(synConfig ->
+                configSynapseRepository.count()
+                        .flatMap(count -> {
+                            if (count == 0) {
+                                // if no config is present, save the new one
+                                return configSynapseRepository.save(synConfig);
+                            } else if (count == 1) {
+                                // if exactly one config is present, update it
+                                return configSynapseRepository.findAll()
+                                        .next()
+                                        .flatMap(
+                                            // here's where you update the existing conf with new values from synConfig
+                                            // set fields from synConfig to existingConf
+                                            configSynapseRepository::save);
+                            } else {
+                                log.atError().log("Recognized, more than one synapse config found - validate the controller implementation!");
+                                return configSynapseRepository.deleteAll()
+                                        .then(configSynapseRepository.save(synConfig));
+                            }
+                        }));
+    }
+
+    @Override
+    public Mono<SynapseConfig> restoreDefaultSynapse() {
+        final SynapseConfig synapseConfigHome = getDefaultSynapse();
+        return updateConfig(Mono.just(synapseConfigHome));
+    }
+
+    @Override
+    public Mono<SynapseConfig> updateConfig(Mono<SynapseConfig> synapseConfigMono) {
+        return createSynapse(synapseConfigMono);
+    }
+
+    private @NotNull SynapseConfig getDefaultSynapse() {
+        return SynapseConfigBuilder.aSynapseConfig()
+                .withHost(properties.getSynapseDefaultHost())
+                .withPort(Integer.getInteger(properties.getSynapseDefaultPort()))
+                .withDescription(properties.getSynapseDefaultDescription())
+                .build();
+    }
+
+}

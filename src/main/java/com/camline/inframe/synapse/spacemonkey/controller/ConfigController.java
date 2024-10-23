@@ -29,6 +29,33 @@ public class ConfigController implements ConfigApiDelegate {
     @GetMapping("/info")
     public Mono<ResponseEntity<Config>> getConfig(final ServerWebExchange exchange) {
 
+        Config config = new Config();
+        config.setSpaceConfig(getSpaceConfig());
+        config.setSynapseConfig(getServerConfig());
+        config.setSpaceCAConfig(getCaConfig());
+
+        return Mono.just(new ResponseEntity<>(config,HttpStatus.OK)).log();
+    }
+
+    private ServerConfig getSpaceConfig(){
+        ServerConfig spaceConfig = new ServerConfig();
+        spaceConfig.setServiceName("Space Config");
+        spaceConfig.setUrl("http://localhost");
+        spaceConfig.setPort(8099);
+
+        return spaceConfig;
+    }
+
+    private ServerConfig getServerConfig() {
+        ServerConfig synapseConfig = new ServerConfig();
+        synapseConfig.setServiceName("SynapseConfig Config");
+        synapseConfig.setUrl("http://localhost");
+        synapseConfig.setPort(8090);
+
+        return synapseConfig;
+    }
+
+    private List<CaConfig> getCaConfig() {
         CaConfig spaceCaConfig = new CaConfig();
         spaceCaConfig.setName("hupe.blau.HOLD");
         spaceCaConfig.setDescription("Hupe is drunk and must be set to stage: HOLD");
@@ -36,21 +63,6 @@ public class ConfigController implements ConfigApiDelegate {
         List<CaConfig> caList = new ArrayList<>();
         caList.add(spaceCaConfig);
 
-        ServerConfig synapseConfig = new ServerConfig();
-        synapseConfig.setServiceName("Synapse Config");
-        synapseConfig.setUrl("http://localhost");
-        synapseConfig.setPort(8090);
-
-        ServerConfig spaceConfig = new ServerConfig();
-        spaceConfig.setServiceName("Space Config");
-        spaceConfig.setUrl("http://localhost");
-        spaceConfig.setPort(8099);
-
-        Config config = new Config();
-        config.setSpaceConfig(spaceConfig);
-        config.setSynapseConfig(synapseConfig);
-        config.setSpaceCAConfig(caList);
-
-        return Mono.just(new ResponseEntity<>(config,HttpStatus.OK)).log();
+        return caList;
     }
 }

@@ -17,7 +17,7 @@ public class Connection {
     private String inboundTime;
 
     private String remoteAddress;
-    private String remotehostName;
+    private String remoteHostName;
     private int remotePort;
 
     private String localAddress;
@@ -34,9 +34,8 @@ public class Connection {
 
     public void setInboundTime(OffsetDateTime inboundTime) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS ZZZ");
-        String timeString = inboundTime.format(formatter);
 
-        this.inboundTime = timeString;
+        this.inboundTime = inboundTime.format(formatter);
     }
 
     public String getRemoteAddress() {
@@ -47,12 +46,12 @@ public class Connection {
         this.remoteAddress = remoteAddress;
     }
 
-    public String getRemotehostName() {
-        return remotehostName;
+    public String getRemoteHostName() {
+        return remoteHostName;
     }
 
     public void setRemoteHostName(String remotehostName) {
-        this.remotehostName = remotehostName;
+        this.remoteHostName = remotehostName;
     }
 
     public int getRemotePort() {
@@ -91,12 +90,12 @@ public class Connection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Connection that)) return false;
-        return getRemotePort() == that.getRemotePort() && Objects.equals(getId(), that.getId()) && Objects.equals(getInboundTime(), that.getInboundTime()) && Objects.equals(getRemoteAddress(), that.getRemoteAddress()) && Objects.equals(getRemotehostName(), that.getRemotehostName()) && Objects.equals(getLocalAddress(), that.getLocalAddress()) && Objects.equals(getLocalPath(), that.getLocalPath()) && Objects.equals(getLocalQueryParams(), that.getLocalQueryParams());
+        return getRemotePort() == that.getRemotePort() && Objects.equals(getId(), that.getId()) && Objects.equals(getInboundTime(), that.getInboundTime()) && Objects.equals(getRemoteAddress(), that.getRemoteAddress()) && Objects.equals(getRemoteHostName(), that.getRemoteHostName()) && Objects.equals(getLocalAddress(), that.getLocalAddress()) && Objects.equals(getLocalPath(), that.getLocalPath()) && Objects.equals(getLocalQueryParams(), that.getLocalQueryParams());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getInboundTime(), getRemoteAddress(), getRemotehostName(), getRemotePort(), getLocalAddress(), getLocalPath(), getLocalQueryParams());
+        return Objects.hash(getId(), getInboundTime(), getRemoteAddress(), getRemoteHostName(), getRemotePort(), getLocalAddress(), getLocalPath(), getLocalQueryParams());
     }
 
     @Override
@@ -105,7 +104,7 @@ public class Connection {
         sb.append("id='").append(id).append('\'');
         sb.append(", inboundTime='").append(inboundTime).append('\'');
         sb.append(", remoteAddress='").append(remoteAddress).append('\'');
-        sb.append(", remotehostName='").append(remotehostName).append('\'');
+        sb.append(", remotehostName='").append(remoteHostName).append('\'');
         sb.append(", remotePort=").append(remotePort);
         sb.append(", localAddress='").append(localAddress).append('\'');
         sb.append(", localPath='").append(localPath).append('\'');

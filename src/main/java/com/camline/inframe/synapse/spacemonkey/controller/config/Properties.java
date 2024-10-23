@@ -10,16 +10,20 @@ public class Properties {
         super();
     }
 
-    @Value("${spacemonkey.duration.quantity}")
+    @Value("${space-monkey.service.response.duration.quantity}")
     private String durationQuantity;
-
-    @Value("${spring.data.mongodb.host}")
+    @Value("${spring.data.mongodb.host:localhost}")
     private String mongoDbHost;
-    @Value("${spring.data.mongodb.port}")
+    @Value("${spring.data.mongodb.port:27017}")
     private String mongoDbPort;
-    @Value("${spring.data.mongodb.database}")
+    @Value("${spring.data.mongodb.database:space-monkey}")
     private String mongoDbDatabase;
-
+    @Value("${space-monkey.service.connection.synapseConfig.host.default:localhost}")
+    private String synapseDefaultHost;
+    @Value("${space-monkey.service.connection.synapseConfig.port.default:443}")
+    private String synapseDefaultPort;
+    @Value("${space-monkey.service.connection.synapseConfig.description.default:Fallback-Synapse-Config}")
+    private String synapseDefaultDescription;
 
     public String getDurationQuantity() {
         return durationQuantity;
@@ -35,5 +39,17 @@ public class Properties {
 
     public String getMongoDbDatabase() {
         return mongoDbDatabase;
+    }
+
+    public String getSynapseDefaultHost() {
+        return synapseDefaultHost;
+    }
+
+    public String getSynapseDefaultPort() {
+        return synapseDefaultPort;
+    }
+
+    public String getSynapseDefaultDescription() {
+        return synapseDefaultDescription;
     }
 }

@@ -39,7 +39,6 @@ import java.util.Arrays;
 @RequestMapping("/space/")
 public class CorrectiveActionController implements SpaceApiDelegate {
 
-
     private static final Logger log = LoggerFactory.getLogger(CorrectiveActionController.class);
 
     private final Properties properties;
@@ -47,11 +46,11 @@ public class CorrectiveActionController implements SpaceApiDelegate {
     private final CorrectiveActionServiceImpl correctiveActionService;
     private final Environment environment;
 
-    public CorrectiveActionController(Properties properties, ConnectionServiceImpl connectionService, CorrectiveActionServiceImpl correctiveActionService, Environment environment) {
-        this.properties = properties;
+    public CorrectiveActionController(ConnectionServiceImpl connectionService, CorrectiveActionServiceImpl correctiveActionService, Environment environment, Properties properties) {
         this.connectionService = connectionService;
         this.correctiveActionService = correctiveActionService;
         this.environment = environment;
+        this.properties = properties;
     }
 
     @Override
@@ -60,9 +59,13 @@ public class CorrectiveActionController implements SpaceApiDelegate {
 
         OffsetDateTime start = saveInboundConnections(exchange);
 
-        final ServiceResponce serviceResponse = getServiceResponce(start, ServiceResponseMessages.SERVICE_RESPONSE_ACCEPTED);
-
-        return Mono.just(new ResponseEntity<>(serviceResponse, HttpStatus.OK));
+        return Mono.just(new ResponseEntity<>(
+                getServiceResponce(start, ServiceResponseMessages.SERVICE_RESPONSE_ACCEPTED), HttpStatus.OK))
+                .onErrorResume( e -> {
+                    log.atError().log(e.getMessage());
+                    final ServiceResponce serviceResponse = getServiceResponce(start, ServiceResponseMessages.SERVICE_RESPONSE_ERROR);
+                    return Mono.just(new ResponseEntity<>(serviceResponse, HttpStatus.OK));
+                });
     }
 
     @Override
@@ -76,7 +79,16 @@ public class CorrectiveActionController implements SpaceApiDelegate {
                 .flatMap(savedData -> {
                     final ServiceResponce serviceResponse = getServiceResponce(start, ServiceResponseMessages.SERVICE_RESPONSE_PROCESSED);
                     return Mono.just(new ResponseEntity<>(serviceResponse, HttpStatus.OK));
+                })
+                .onErrorResume(e -> {
+                    log.atError().log(e.getMessage());
+                    final ServiceResponce serviceResponse = getServiceResponce(start, ServiceResponseMessages.SERVICE_RESPONSE_ERROR, e.getLocalizedMessage());
+                    return Mono.just(new ResponseEntity<>(serviceResponse, HttpStatus.OK));
                 });
+    }
+
+    private @NotNull ServiceResponce getServiceResponce(OffsetDateTime start, ServiceResponseMessages message, String extenedMessage) {
+        return getServiceResponce(start, message.getMessage() + ": " + extenedMessage);
     }
 
     private @NotNull ServiceResponce getServiceResponce(OffsetDateTime start, ServiceResponseMessages message) {
@@ -128,7 +140,7 @@ public class CorrectiveActionController implements SpaceApiDelegate {
 
         log.atDebug().log("InboundTime: " + connection.getInboundTime());
         log.atDebug().log("RemoteAddress: " + connection.getRemoteAddress());
-        log.atDebug().log("RemoteHostName: " + connection.getRemotehostName());
+        log.atDebug().log("RemoteHostName: " + connection.getRemoteHostName());
         log.atDebug().log("RemotePort: " + connection.getRemotePort());
         log.atDebug().log("LocalAddress: " + connection.getLocalAddress());
         log.atDebug().log("Path: " + connection.getLocalPath());

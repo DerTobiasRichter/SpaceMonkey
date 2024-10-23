@@ -6,7 +6,6 @@ import reactor.core.publisher.Flux;
 
 public interface CorrectiveActionRepository  extends ReactiveMongoRepository<CaSelectedSamplesData, String> {
 
-
     Flux<CaSelectedSamplesData> findByCaContext_ldsId(Integer caContextLdsId);
 
 }
