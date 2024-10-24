@@ -45,6 +45,102 @@
 			"response": []
 		},
 		{
+			"name": "Config/Synapse",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:8080/config/synapse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"config",
+						"synapse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Config/Synapse",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"serviceName\": \"SynapseMES\",\r\n  \"host\": \"localhost\",\r\n  \"port\": 8080,\r\n  \"description\": \"Test Config SynapseMES Service\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/config/synapse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"config",
+						"synapse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Config/Synapse",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"serviceName\": \"SynapseMES\",\r\n  \"host\": \"localhost\",\r\n  \"port\": 8080,\r\n  \"description\": \"Test Config SynapseMES Service\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/config/synapse",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"config",
+						"synapse"
+					]
+				}
+			},
+			"response": []
+		},
+		{
 			"name": "Space/Corrective-Action",
 			"protocolProfileBehavior": {
 				"disableBodyPruning": true
@@ -68,15 +164,15 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/config/info",
+					"raw": "http://localhost:8080/space/corrective-action",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "8080",
 					"path": [
-						"config",
-						"info"
+						"space",
+						"corrective-action"
 					]
 				}
 			},
