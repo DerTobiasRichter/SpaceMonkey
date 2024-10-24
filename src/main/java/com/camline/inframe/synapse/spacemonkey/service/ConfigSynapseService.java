@@ -1,6 +1,6 @@
 package com.camline.inframe.synapse.spacemonkey.service;
 
-import com.camline.inframe.synapse.spacemonkey.domain.config.SynapseConfig;
+import com.camline.inframe.synapse.spacemonkey.domain.service.SynapseConfig;
 import reactor.core.publisher.Mono;
 
 public interface ConfigSynapseService {

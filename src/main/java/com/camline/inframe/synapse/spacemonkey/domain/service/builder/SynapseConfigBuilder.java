@@ -1,4 +1,6 @@
-package com.camline.inframe.synapse.spacemonkey.domain.config;
+package com.camline.inframe.synapse.spacemonkey.domain.service.builder;
+
+import com.camline.inframe.synapse.spacemonkey.domain.service.SynapseConfig;
 
 public final class SynapseConfigBuilder {
     private String serviceName;

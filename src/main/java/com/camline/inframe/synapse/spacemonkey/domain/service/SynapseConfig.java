@@ -1,4 +1,4 @@
-package com.camline.inframe.synapse.spacemonkey.domain.config;
+package com.camline.inframe.synapse.spacemonkey.domain.service;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;

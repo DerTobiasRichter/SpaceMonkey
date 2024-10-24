@@ -1,6 +1,6 @@
 package com.camline.inframe.synapse.spacemonkey.integration;
 import com.camline.inframe.synapse.spacemonkey.model.space.ServiceResponce;
-import com.camline.inframe.synapse.spacemonkey.controller.ConfigController;
+import com.camline.inframe.synapse.spacemonkey.controller.service.ConfigController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.autoconfigure.web.reactive.WebFluxTest;

@@ -1,8 +1,8 @@
 package com.camline.inframe.synapse.spacemonkey.service.impl;
 
 import com.camline.inframe.synapse.spacemonkey.controller.config.Properties;
-import com.camline.inframe.synapse.spacemonkey.domain.config.SynapseConfig;
-import com.camline.inframe.synapse.spacemonkey.domain.config.SynapseConfigBuilder;
+import com.camline.inframe.synapse.spacemonkey.domain.service.SynapseConfig;
+import com.camline.inframe.synapse.spacemonkey.domain.service.builder.SynapseConfigBuilder;
 import com.camline.inframe.synapse.spacemonkey.repository.ConfigSynapseRepository;
 import com.camline.inframe.synapse.spacemonkey.service.ConfigSynapseService;
 import org.jetbrains.annotations.NotNull;
@@ -43,10 +43,13 @@ public class ConfigSynapseServiceImpl implements ConfigSynapseService {
                                 // if exactly one config is present, update it
                                 return configSynapseRepository.findAll()
                                         .next()
-                                        .flatMap(
-                                            // here's where you update the existing conf with new values from synConfig
-                                            // set fields from synConfig to existingConf
-                                            configSynapseRepository::save);
+                                        .flatMap(config -> {
+                                            config.setServiceName(synConfig.getServiceName());
+                                            config.setHost(synConfig.getHost());
+                                            config.setPort(synConfig.getPort());
+                                            config.setDescription(synConfig.getDescription());
+                                            return configSynapseRepository.save(config);
+                                        });
                             } else {
                                 log.atError().log("Recognized, more than one synapse config found - validate the controller implementation!");
                                 return configSynapseRepository.deleteAll()
