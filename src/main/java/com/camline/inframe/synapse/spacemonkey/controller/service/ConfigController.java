@@ -1,15 +1,16 @@
 package com.camline.inframe.synapse.spacemonkey.controller.service;
 
 import com.camline.inframe.synapse.spacemonkey.api.service.ConfigApiDelegate;
+import com.camline.inframe.synapse.spacemonkey.domain.service.Connection;
 import com.camline.inframe.synapse.spacemonkey.domain.service.SynapseConfig;
 import com.camline.inframe.synapse.spacemonkey.domain.service.builder.SynapseConfigBuilder;
-import com.camline.inframe.synapse.spacemonkey.model.service.CaConfig;
-import com.camline.inframe.synapse.spacemonkey.model.service.Config;
-import com.camline.inframe.synapse.spacemonkey.model.service.ServerConfig;
-import com.camline.inframe.synapse.spacemonkey.model.service.SpaceConnections;
+import com.camline.inframe.synapse.spacemonkey.model.service.*;
 import com.camline.inframe.synapse.spacemonkey.service.impl.ConfigSynapseServiceImpl;
+import com.camline.inframe.synapse.spacemonkey.service.impl.ConnectionServiceImpl;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -29,10 +30,12 @@ import java.util.List;
 @RequestMapping("/config")
 public class ConfigController implements ConfigApiDelegate {
 
-    ConfigSynapseServiceImpl synapseService;
+    private final ConfigSynapseServiceImpl synapseService;
+    private final ConnectionServiceImpl connectionService;
 
-    public ConfigController(ConfigSynapseServiceImpl synapseService) {
+    public ConfigController(ConfigSynapseServiceImpl synapseService, ConnectionServiceImpl connectionService) {
         this.synapseService = synapseService;
+        this.connectionService = connectionService;
     }
 
     @Override
@@ -93,9 +96,13 @@ public class ConfigController implements ConfigApiDelegate {
     }
 
     private Mono<SpaceConnections> getSpaceConnections() {
-        SpaceConnections spaceConnections = new SpaceConnections();
-
-        return Mono.just(spaceConnections);
+        return connectionService.getAllConnections()
+                .map(this::mapToSpaceConnection).collectList()
+                .map(spaceConnectionsList -> {
+                    SpaceConnections spaceConnections = new SpaceConnections();
+                    spaceConnections.setConnections(spaceConnectionsList);
+                    return spaceConnections;
+                });
     }
 
     private Mono<List<CaConfig>> getCaConfig() {
@@ -128,6 +135,36 @@ public class ConfigController implements ConfigApiDelegate {
                 .withPort(serverConfig.getPort())
                 .withDescription(serverConfig.getDescription())
                 .build();
+    }
+
+    private SpaceConnection mapToSpaceConnection(Connection connection) {
+
+        final var spaceConnection = getSpaceConnection(connection);
+
+        MultiValueMap<String, String> connectionQueryParam = connection.getLocalQueryParams();
+        if(connectionQueryParam != null){
+            for (String key : connectionQueryParam.keySet()){
+                QueryParam queryParam = new QueryParam();
+                queryParam.setKey(key);
+                queryParam.setValue(connectionQueryParam.getFirst(key));
+                spaceConnection.addLocalQueryParamsItem(queryParam);
+            }
+        }
+
+        return spaceConnection;
+    }
+
+    private static @NotNull SpaceConnection getSpaceConnection(Connection connection) {
+        SpaceConnection spaceConnection = new SpaceConnection();
+        spaceConnection.setInboundTime(connection.getInboundTime());
+        spaceConnection.setRemoteAddress(connection.getRemoteAddress());
+        spaceConnection.setRemoteHostName(connection.getRemoteHostName());
+        spaceConnection.setRemotePort(connection.getRemotePort());
+
+        spaceConnection.setLocalAddress(connection.getLocalAddress());
+        spaceConnection.setLocalPath(connection.getLocalPath());
+        spaceConnection.setLocalHttpRequestMethod(connection.getLocalHttpRequestMethod());
+        return spaceConnection;
     }
 
 }

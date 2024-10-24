@@ -2,6 +2,7 @@ package com.camline.inframe.synapse.spacemonkey.domain.service;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.http.HttpMethod;
 import org.springframework.util.MultiValueMap;
 
 import java.time.OffsetDateTime;
@@ -22,6 +23,8 @@ public class Connection {
 
     private String localAddress;
     private String localPath;
+    private String localHttpRequestMethod;
+
     private MultiValueMap<String, String> localQueryParams;
 
     public String getId() {
@@ -78,6 +81,14 @@ public class Connection {
         this.localPath = localPath;
     }
 
+    public String getLocalHttpRequestMethod(){
+        return localHttpRequestMethod;
+    }
+
+    public void setLocalHttpRequestMethod(HttpMethod localHttpRequestMethod) {
+        this.localHttpRequestMethod = localHttpRequestMethod.name();
+    }
+
     public MultiValueMap<String, String> getLocalQueryParams() {
         return localQueryParams;
     }
@@ -90,12 +101,12 @@ public class Connection {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Connection that)) return false;
-        return getRemotePort() == that.getRemotePort() && Objects.equals(getId(), that.getId()) && Objects.equals(getInboundTime(), that.getInboundTime()) && Objects.equals(getRemoteAddress(), that.getRemoteAddress()) && Objects.equals(getRemoteHostName(), that.getRemoteHostName()) && Objects.equals(getLocalAddress(), that.getLocalAddress()) && Objects.equals(getLocalPath(), that.getLocalPath()) && Objects.equals(getLocalQueryParams(), that.getLocalQueryParams());
+        return getRemotePort() == that.getRemotePort() && Objects.equals(getId(), that.getId()) && Objects.equals(getInboundTime(), that.getInboundTime()) && Objects.equals(getRemoteAddress(), that.getRemoteAddress()) && Objects.equals(getRemoteHostName(), that.getRemoteHostName()) && Objects.equals(getLocalAddress(), that.getLocalAddress()) && Objects.equals(getLocalPath(), that.getLocalPath()) && Objects.equals(getLocalHttpRequestMethod(), that.getLocalHttpRequestMethod()) && Objects.equals(getLocalQueryParams(), that.getLocalQueryParams());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getInboundTime(), getRemoteAddress(), getRemoteHostName(), getRemotePort(), getLocalAddress(), getLocalPath(), getLocalQueryParams());
+        return Objects.hash(getId(), getInboundTime(), getRemoteAddress(), getRemoteHostName(), getRemotePort(), getLocalAddress(), getLocalPath(), getLocalHttpRequestMethod(), getLocalQueryParams());
     }
 
     @Override
@@ -104,12 +115,14 @@ public class Connection {
         sb.append("id='").append(id).append('\'');
         sb.append(", inboundTime='").append(inboundTime).append('\'');
         sb.append(", remoteAddress='").append(remoteAddress).append('\'');
-        sb.append(", remotehostName='").append(remoteHostName).append('\'');
+        sb.append(", remoteHostName='").append(remoteHostName).append('\'');
         sb.append(", remotePort=").append(remotePort);
         sb.append(", localAddress='").append(localAddress).append('\'');
         sb.append(", localPath='").append(localPath).append('\'');
+        sb.append(", localHttpRequestMethod='").append(localHttpRequestMethod).append('\'');
         sb.append(", localQueryParams=").append(localQueryParams);
         sb.append('}');
         return sb.toString();
     }
+
 }

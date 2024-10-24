@@ -12,6 +12,7 @@ import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.env.Environment;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.server.RequestPath;
@@ -87,8 +88,8 @@ public class CorrectiveActionController implements SpaceApiDelegate {
                 });
     }
 
-    private @NotNull ServiceResponce getServiceResponce(OffsetDateTime start, ServiceResponseMessages message, String extenedMessage) {
-        return getServiceResponce(start, message.getMessage() + ": " + extenedMessage);
+    private @NotNull ServiceResponce getServiceResponce(OffsetDateTime start, ServiceResponseMessages serviceResponseMessages, String extendedMessage) {
+        return getServiceResponce(start, serviceResponseMessages.getMessage() + ": " + extendedMessage);
     }
 
     private @NotNull ServiceResponce getServiceResponce(OffsetDateTime start, ServiceResponseMessages message) {
@@ -111,8 +112,9 @@ public class CorrectiveActionController implements SpaceApiDelegate {
 
         InetSocketAddress remoteAddress = exchange.getRequest().getRemoteAddress();
         InetSocketAddress localAddress = exchange.getRequest().getLocalAddress();
-        RequestPath path = exchange.getRequest().getPath();
+        RequestPath localPath = exchange.getRequest().getPath();
         MultiValueMap<String, String> queryParams = exchange.getRequest().getQueryParams();
+        HttpMethod localHttpRequestMethod = exchange.getRequest().getMethod();
 
         Connection connection = new Connection();
         connection.setInboundTime(start);
@@ -134,8 +136,12 @@ public class CorrectiveActionController implements SpaceApiDelegate {
         else if(Arrays.stream(environment.getActiveProfiles()).toList().contains("dev-test")) {
             connection.setLocalAddress("Test Host");
         }
+        else {
+            connection.setLocalAddress("Host information was not recognized.");
+        }
 
-        connection.setLocalPath(path.toString());
+        connection.setLocalPath(localPath.toString());
+        connection.setLocalHttpRequestMethod(localHttpRequestMethod);
         connection.setLocalQueryParams(queryParams);
 
         log.atDebug().log("InboundTime: " + connection.getInboundTime());

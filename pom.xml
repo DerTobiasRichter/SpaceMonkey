@@ -95,29 +95,29 @@
                 <version>1.0.10</version>
                 <executions>
                     <execution>
-                        <id>ConfigAPI</id>
+                        <id>ServiceConfigAPI</id>
                         <phase>initialize</phase>
                         <goals>
                             <goal>download</goal>
                         </goals>
                         <configuration>
-                            <api>Space-Monkey-Rx</api>
+                            <api>SpaceMonkey_Service-Configuration-Rx</api>
                             <owner>camLine-DRS</owner>
                             <version>1.0.0</version>
-                            <outputFile>target/space-monkey-rx.json</outputFile>
+                            <outputFile>target/space-monkey-config.json</outputFile>
                         </configuration>
                     </execution>
                     <execution>
-                        <id>SpaceRxAPI</id>
+                        <id>SpaceReferenceAPI</id>
                         <phase>initialize</phase>
                         <goals>
                             <goal>download</goal>
                         </goals>
                         <configuration>
-                            <api>Space-Api-Rx</api>
+                            <api>SpaceMonkey_Space-Reference-Api-Rx</api>
                             <owner>camLine-DRS</owner>
                             <version>1.0.1</version>
-                            <outputFile>target/space-api-rx.json</outputFile>
+                            <outputFile>target/space-reference-api.json</outputFile>
                         </configuration>
                     </execution>
                 </executions>
@@ -133,7 +133,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>target/space-monkey-rx.json</inputSpec>
+                            <inputSpec>target/space-monkey-config.json</inputSpec>
                             <generatorName>spring</generatorName>
                             <packageName>${project.groupId}.spacemonkey</packageName>
                             <apiPackage>${project.groupId}.spacemonkey.api.service</apiPackage>
@@ -162,7 +162,7 @@
                             <goal>generate</goal>
                         </goals>
                         <configuration>
-                            <inputSpec>target/space-api-rx.json</inputSpec>
+                            <inputSpec>target/space-reference-api.json</inputSpec>
                             <generatorName>spring</generatorName>
                             <packageName>${project.groupId}.spacemonkey</packageName>
                             <apiPackage>${project.groupId}.spacemonkey.api.space</apiPackage>
@@ -193,5 +193,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>

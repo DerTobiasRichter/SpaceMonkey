@@ -77,7 +77,7 @@ public class ConfigSynapseServiceImpl implements ConfigSynapseService {
         String host = properties.getSynapseDefaultHost();
         int port = Integer.parseInt(properties.getSynapseDefaultPort());
         String description = properties.getSynapseDefaultDescription();
-        log.atError().log("Synapse Default: \n\t\t\tServiceName:" +
+        log.atWarn().log("Synapse Default restored: \n\t\t\tServiceName:" +
                 serviceName + "\n\t\t\tHost:" +
                 host + "\n\t\t\tPort: " +
                 port + "\n\t\t\tDescription: " +
